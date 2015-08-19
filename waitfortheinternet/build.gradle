@@ -22,6 +22,14 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
 }
 
+def getRepositoryUsername() {
+    return rootProject.hasProperty("ossrhUsername")? rootProject.property("ossrhUsername"):""
+}
+
+def getRepositoryPassword() {
+    return rootProject.hasProperty("ossrhPassword")? rootProject.property("ossrhPassword"):""
+}
+
 def isReleaseBuild() {
     return version.contains("SNAPSHOT") == false
 }
@@ -37,11 +45,11 @@ uploadArchives {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
             repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
+                authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
             }
 
             snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
+                authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
             }
 
             pom.project {
