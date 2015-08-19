@@ -20,11 +20,11 @@ public class WaitForTheInternet {
         this.action = null;
     }
 
-    public static WaitForTheInternet build(Context context) {
+    public static WaitForTheInternet with(Context context) {
         return new WaitForTheInternet(context);
     }
 
-    public WaitForTheInternet setAction(OnInternetAction action) {
+    public WaitForTheInternet action(OnInternetAction action) {
         this.action = action;
         return this;
     }
@@ -32,13 +32,13 @@ public class WaitForTheInternet {
     public void execute() {
         if (action == null) {
             // TODO: Create custom exception
-            throw new RuntimeException("remember call setAction method");
+            throw new RuntimeException("remember call action method");
         }
         if (isConnectedToInternet()) {
             action.onInternet();
         }
         else {
-            Log.d(TAG, "Delaying action");
+            Log.d(TAG, "Waiting for internet");
             IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
             context.registerReceiver(new BroadcastReceiver() {
                 @Override

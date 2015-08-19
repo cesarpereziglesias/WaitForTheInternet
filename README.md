@@ -6,8 +6,8 @@ Usage
 
 ```java
 WaitForTheInternet
-	.build(context)
-    .setAction(new WaitForTheInternet.OnInternetAction() {
+	.with(context)
+    .action(new WaitForTheInternet.OnInternetAction() {
         @Override
         public void onInternet() {
             // DO SOMETHING WHEN INTERNET IS AVAILABLE;

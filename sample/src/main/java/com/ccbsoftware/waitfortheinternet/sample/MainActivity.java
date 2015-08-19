@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 WaitForTheInternet
-                        .build(MainActivity.this)
-                        .setAction(new WaitForTheInternet.OnInternetAction() {
+                        .with(MainActivity.this)
+                        .action(new WaitForTheInternet.OnInternetAction() {
 
                             @Override
                             public void onInternet() {
