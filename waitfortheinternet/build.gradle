@@ -1,8 +1,9 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
 apply plugin: 'maven'
 apply plugin: 'signing'
 
-version '0.2'
+version '0.1'
 group 'com.ccbsoftware'
 
 android {
@@ -34,12 +35,22 @@ def isReleaseBuild() {
     return version.contains("SNAPSHOT") == false
 }
 
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifact "build/outputs/aar/waitfortheinternet-release.aar"
+            artifactId 'waitfortheinternet'
+        }
+    }
+}
+
 signing {
     required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
     sign configurations.archives
 }
 
 uploadArchives {
+    configuration = configurations.archives
     repositories {
         mavenDeployer {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
