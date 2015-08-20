@@ -40,7 +40,7 @@ publishing {
     publications {
         maven(MavenPublication) {
             artifact "build/outputs/aar/waitfortheinternet-release.aar"
-            artifactId 'library'
+            artifactId 'waitfortheinternet'
         }
     }
 }
