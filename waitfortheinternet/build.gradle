@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
 apply plugin: 'maven'
 apply plugin: 'signing'
 
@@ -35,62 +34,65 @@ def isReleaseBuild() {
     return version.contains("SNAPSHOT") == false
 }
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            artifact "build/outputs/aar/waitfortheinternet-release.aar"
-            artifactId 'waitfortheinternet'
-        }
-    }
-}
+afterEvaluate { project ->
+    uploadArchives {
+        configuration = configurations.archives
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-signing {
-    required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
-    sign configurations.archives
-}
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+                }
 
-uploadArchives {
-    configuration = configurations.archives
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+                }
 
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
-            }
-
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
-            }
-
-            pom.project {
-                name 'WaitForTheInternet'
-                packaging 'aar'
-                artifactId 'waitfortheinternet'
-                description 'The library to handle lost of internet connection'
-                url 'https://github.com/ouvigna/WaitForTheInternet'
-
-                scm {
+                pom.project {
+                    name 'WaitForTheInternet'
+                    packaging 'aar'
+                    artifactId 'waitfortheinternet'
+                    description 'The library to handle lost of internet connection'
                     url 'https://github.com/ouvigna/WaitForTheInternet'
-                    connection 'scm:git@github.com:ouvigna/WaitForTheInternet.git'
-                    developerConnection 'scm:git@github.com:ouvigna/WaitForTheInternet.git'
-                }
 
-                licenses {
-                    license {
-                        name 'MIT license'
-                        url 'http://www.opensource.org/licenses/mit-license.php'
-                        distribution 'repo'
+                    scm {
+                        url 'https://github.com/ouvigna/WaitForTheInternet'
+                        connection 'scm:git@github.com:ouvigna/WaitForTheInternet.git'
+                        developerConnection 'scm:git@github.com:ouvigna/WaitForTheInternet.git'
                     }
-                }
 
-                developers {
-                    developer {
-                        id 'ouvigna'
-                        name 'César Pérez'
+                    licenses {
+                        license {
+                            name 'MIT license'
+                            url 'http://www.opensource.org/licenses/mit-license.php'
+                            distribution 'repo'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'ouvigna'
+                            name 'César Pérez'
+                        }
                     }
                 }
             }
         }
     }
+
+    signing {
+        required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
+        sign configurations.archives
+    }
+
+    task androidSourcesJar(type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.sourceFiles
+    }
+
+    artifacts {
+        archives androidSourcesJar
+    }
+
 }
