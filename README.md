@@ -3,6 +3,17 @@ WaitForTheInternet
 
 [![GitHub version](https://badge.fury.io/gh/CCBSoftware%2FWaitForTheInternet.svg)](http://badge.fury.io/gh/CCBSoftware%2FWaitForTheInternet)
 
+
+Adding to your project
+----------------------
+
+Include it in your gradle dependencies:
+
+```
+compile 'com.ccbsoftware:waitfortheinternet:1.0'
+```
+
+
 Usage
 -----
 
