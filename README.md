@@ -10,7 +10,7 @@ Adding to your project
 Include it in your gradle dependencies:
 
 ```
-compile 'com.ccbsoftware:waitfortheinternet:1.0'
+compile 'com.ccbsoftware:waitfortheinternet:1.0.0'
 ```
 
 
