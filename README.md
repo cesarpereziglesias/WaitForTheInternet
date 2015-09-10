@@ -1,7 +1,7 @@
 WaitForTheInternet
 ==================
 
-[![GitHub version](https://badge.fury.io/gh/CCBSoftware%2FWaitForTheInternet.svg)](http://badge.fury.io/gh/CCBSoftware%2FWaitForTheInternet)
+[![GitHub version](https://badge.fury.io/gh/ouvigna%2FWaitForTheInternet.svg)](http://badge.fury.io/gh/ouvigna%2FWaitForTheInternet)
 
 
 Adding to your project
